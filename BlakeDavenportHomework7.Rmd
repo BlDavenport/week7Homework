@@ -1,0 +1,38 @@
+---
+title: "wordcloud"
+author: "Blake Davenport"
+date: "June 23, 2016"
+output: html_document
+---
+##My first attempt at this exercise followed the code provided in class.
+##However, the code did not work.
+##The specific block that posed the issues were as follows:
+
+# Parse the links
+doc = htmlParse(txt, asText = TRUE)
+links = getNodeSet(doc, "//div[@class = 'job-title']/a/@href")
+# Save the links in the vector joblinks
+joblinks <- getRelativeURL(as.character(links), "http://www.cybercoders.com/search/")
+# Read the posts
+# posts <- lapply(joblinks,cy.readPost)
+
+##I could not find a solution, so I attempted a different direction.
+##I converted the example keywords into a csv file called jobskills.
+
+##I used the following code ideas from http://www.r-bloggers.com/building-wordclouds-in-r/
+
+library(tm)
+library(SnowballC)
+library(wordcloud)
+
+jobskills <- Corpus(VectorSource(jobskills$Skills))
+jobskills <- tm_map(jobskills, PlainTextDocument)
+jobskills <- tm_map(jobskills, removePunctuation)
+jobskills <- tm_map(jobskills, stemDocument)
+
+wordcloud(jobskills, max.words = 100, random.order = FALSE)
+
+##Unfortunately, I still can't get this to work.
+##One cause I did notice is that wordcloud is now under 3.3.1
+##I'm using 3.3.0
+##I'll continue to work on this, but ran out of time this evening.
